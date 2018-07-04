@@ -1,11 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using System;
-using System.Collections.Generic;
-using qtools.qhierarchy.pdata;
 using qtools.qhierarchy.phierarchy;
-using UnityEditor.Callbacks;
-using qtools.qhierarchy.phelper;
 
 namespace qtools.qhierarchy
 {
@@ -42,7 +37,6 @@ namespace qtools.qhierarchy
         static void update()
         {
             if (hierarchy == null) init();
-            QObjectListManager.getInstance().update();
         }
 
         static void hierarchyWindowItemOnGUIHandler(int instanceId, Rect selectionRect)
@@ -54,7 +48,6 @@ namespace qtools.qhierarchy
         static void hierarchyWindowChanged()
         {
             if (hierarchy == null) init();
-            QObjectListManager.getInstance().validate();
         }
     }
 }

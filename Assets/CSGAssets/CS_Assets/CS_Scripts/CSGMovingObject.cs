@@ -64,11 +64,13 @@ namespace ColorSwitchGame
 		void Update()
 		{
 			// If we have a rotation speed set, rotate
-			if ( rotateSpeed != 0 )    
+			if ( rotateSpeed != 0f )    
 			{
 				// If pingpong, rotate in a smooth pendulum motion. Otherwise rotate in the direction and speed set
-				if ( rotatePingPong == true )    thisTransform.eulerAngles = Vector3.forward * (initialRotation + Mathf.Sin(Time.time * rotateSpeed * 0.01f) * 180);
-				else    thisTransform.eulerAngles += Vector3.forward * rotateSpeed * Time.deltaTime;
+				if (rotatePingPong)    
+				    thisTransform.eulerAngles = Vector3.forward * (initialRotation + Mathf.Sin(Time.time * rotateSpeed * 0.01f) * 180);
+				else    
+				    thisTransform.eulerAngles += Vector3.forward * rotateSpeed * Time.deltaTime;
 			}
 
 			// If we have waypoints set, move through them
@@ -85,8 +87,10 @@ namespace ColorSwitchGame
 					isWaiting = true;
 
 					// If we are moving in reverse, move to the previous waypoint. Otherwise move to the next waypoint.
-					if ( isReverse == true )    StartCoroutine(ChangeWaypoint( 1, waypoints[currentWaypoint].waitTime));
-					else    StartCoroutine(ChangeWaypoint( -1, waypoints[currentWaypoint].waitTime));
+					if (isReverse)    
+					    StartCoroutine(ChangeWaypoint( 1, waypoints[currentWaypoint].waitTime));
+					else    
+					    StartCoroutine(ChangeWaypoint( -1, waypoints[currentWaypoint].waitTime));
 				}
 			}
 		}

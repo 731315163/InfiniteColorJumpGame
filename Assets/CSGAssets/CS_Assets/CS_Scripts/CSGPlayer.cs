@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using ColorSwitchGame.Types;
 
 namespace ColorSwitchGame
 {
-	/// <summary>
-	/// This script defines a player, which 
-	/// </summary>
-	public class CSGPlayer:MonoBehaviour 
+    /// <summary>
+    /// This script defines a player, which 
+    /// </summary>
+    public class CSGPlayer:MonoBehaviour 
 	{
 		// Various variables we will access often during the game, so we cache them
 		internal Transform thisTransform;
@@ -44,10 +41,14 @@ namespace ColorSwitchGame
 			thisTransform = transform;
 
 			// Register the game controller for easier access
-			if ( gameController == null )    gameController = (CSGGameController) FindObjectOfType(typeof(CSGGameController));
+			if ( gameController == null )    
+			    gameController = (CSGGameController) FindObjectOfType(typeof(CSGGameController));
 
 			// Register the rigidbody for easier access
-			if ( GetComponent<Rigidbody2D>() )    rigidBody = GetComponent<Rigidbody2D>();
+		    rigidBody = GetComponent<Rigidbody2D>();
+		    if (rigidBody == null)
+		        rigidBody = this.gameObject.AddComponent<Rigidbody2D>();
+			    
 
 			// Register the camera for easier access
 			if ( Camera.main.transform )    cameraObject = Camera.main.transform;

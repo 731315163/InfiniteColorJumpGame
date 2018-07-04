@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using ColorSwitchGame.Types;
 using ColorSwitchGame;
+using GDGeek;
 
 namespace ColorSwitchGame
 {
@@ -11,7 +12,7 @@ namespace ColorSwitchGame
 	/// This script defines a block, which can be touched by the player. If the player is the same color as the block, it passes through. If not, it dies.
 	/// </summary>
 	//[ExecuteInEditMode]
-	public class CSGShop:MonoBehaviour
+	public class CSGShop:Singleton<CSGShop>
 	{
 		[Tooltip("How much money we have left")]
 		public float moneyLeft = 0;
@@ -51,7 +52,8 @@ namespace ColorSwitchGame
 		/// Awake is always called before any Start functions.
 		/// This allows you to order initialization of scripts
 		/// </summary>
-		void Start()
+		//todo
+		void Awake()
 		{
 			//Assign the sound source for easier access
 			if ( GameObject.FindGameObjectWithTag(soundSourceTag) )    soundSource = GameObject.FindGameObjectWithTag(soundSourceTag);
@@ -83,10 +85,13 @@ namespace ColorSwitchGame
 					
 					// Assign the button object for this shop item
 					playerBalls[index].buttonObject = newButton;
+
+				    var select = newButton.GetComponent<SelectItem>();
+				    select.State = playerBalls[index];
 				}
 				
 				// Calculate the size of the shop scroller so that it can fit all the items. This depends on the height of the default button multiplied by the number of buttons we have, then divided by the number of columns in the grid
-				defaultButton.transform.parent.GetComponent<RectTransform>().sizeDelta = Vector2.up * (defaultButton.transform.parent.GetComponent<GridLayoutGroup>().cellSize.y * Mathf.FloorToInt((playerBalls.Length+1)/defaultButton.transform.parent.GetComponent<GridLayoutGroup>().constraintCount));
+			//	defaultButton.transform.parent.GetComponent<RectTransform>().sizeDelta = Vector2.up * (defaultButton.transform.parent.GetComponent<GridLayoutGroup>().cellSize.y * Mathf.FloorToInt((playerBalls.Length+1)/defaultButton.transform.parent.GetComponent<GridLayoutGroup>().constraintCount));
 				
 				// Deactivate the default button as we don't need it anymore
 				defaultButton.gameObject.SetActive(false);
@@ -95,8 +100,10 @@ namespace ColorSwitchGame
 			// Update the list of unlockables in the shop ( name, icon, price, lock state )
 			UpdateUnlockables(playerBalls);
 			
-			// Don't destroy this shop when a level is loaded. This is done to allow the player in the level to be updated with our player choice from the shop.
-			DontDestroyOnLoad(gameObject);
+			
+		    // Don't destroy this shop when a level is loaded. This is done to allow the player in the level to be updated with our player choice from the shop.
+           
+		//	DontDestroyOnLoad(gameObject);
 		}
 		
 		/// <summary>
@@ -120,8 +127,6 @@ namespace ColorSwitchGame
 				// If the state is locked
 				if ( unlockables[index].lockState == 0 )
 				{
-					// Hide the icon
-					unlockables[index].buttonObject.Find("Icon").gameObject.SetActive(false);
 					
 					// Show the price
 					unlockables[index].buttonObject.Find("Text").GetComponent<Text>().text = unlockables[index].price.ToString();
@@ -165,8 +170,12 @@ namespace ColorSwitchGame
 							playerBalls[index].buttonObject.GetComponent<Animation>().Play(selectAnimation.name);
 						}
 
+                        Debug.Log("nextindex : " + playerIndex);
+                        playerBalls[playerIndex].buttonObject.GetComponent<SelectItem>().ChangeTextShow("");
+					    playerBalls[index].buttonObject.GetComponent<SelectItem>().ChangeTextShow("使用中");
 						// Save the index of the current player, so that the player object can be updated in game
 						PlayerPrefs.SetInt("PlayerIndex", index);
+					    playerIndex = index;
 						
 						//If there is a source and a sound, play it from the source
 						if ( soundSource && soundSelect )    soundSource.GetComponent<AudioSource>().PlayOneShot(soundSelect);

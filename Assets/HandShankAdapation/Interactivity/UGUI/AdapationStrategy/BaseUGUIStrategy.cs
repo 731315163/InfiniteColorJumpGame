@@ -55,10 +55,10 @@ namespace Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy
         }
 
 
-        protected bool IsPrioritySelectUI(string name)
+        protected bool IsPrioritySelectUI(string selectname)
         {
-            for (var i = 0; i < PrioritySelectUINames.Length; i++)
-                if (PrioritySelectUINames[i] == name)
+            foreach (var prioname in PrioritySelectUINames)
+                if (prioname == selectname)
                     return true;
             return false;
         }
@@ -86,13 +86,12 @@ namespace Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy
         }
 
 
-        protected UIRect FindInitUIRectWithRow()
+        protected UIRect FindInitUIRect(IList<Edge> edges)
         {
-            var list = container.Row;
             UIRect ret = null;
-            for (var i = 0; i < list.Count; i++)
+            for (var i = edges.Count - 1; i >= 0; i--)
             {
-                var edge = list[i];
+                var edge = edges[i];
                 if (edge.UIRect is ClickUIRect)
                 {
                     ret = edge.UIRect;
@@ -102,26 +101,6 @@ namespace Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy
             }
             return ret;
         }
-
-        protected UIRect FindInitUIRectWithColume()
-        {
-            var list = container.Column;
-            UIRect ret = null;
-            for (var i = list.Count - 1; i >= 0; i--)
-            {
-                var edge = list[i];
-                if (edge.UIRect is ClickUIRect)
-                {
-                    ret = edge.UIRect;
-                    if (IsPrioritySelectUI(edge.UIRect.UIComponent.name))
-                    {
-                        return edge.UIRect;
-                    }
-                }
-            }
-            return ret;
-        }
-     
         protected bool IsContainUIRect(UIContainer uicontainer, UIRect rect)
         {
            return uicontainer.Column.Contains(rect.DownEdge);

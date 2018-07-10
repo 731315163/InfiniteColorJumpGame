@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ColorSwitchGame.Types;
+using UnityEngine;
 
 namespace ColorSwitchGame
 {
@@ -34,7 +35,7 @@ namespace ColorSwitchGame
 		public string soundSourceTag = "Sound";
 		internal GameObject soundSource;
 
-
+	    public Sprite[] playerBalls;
 		// Use this for initialization
 		void Start() 
 		{
@@ -61,10 +62,10 @@ namespace ColorSwitchGame
 			{
 				shopObject = (CSGShop) FindObjectOfType(typeof(CSGShop));
 
-				coloredObject.GetComponent<SpriteRenderer>().sprite = shopObject.playerBalls[PlayerPrefs.GetInt("PlayerIndex", 0)].icon;
+			    //coloredObject.GetComponent<SpriteRenderer>().sprite = shopObject.playerBalls[PlayerPrefs.GetInt("PlayerIndex", 0)].icon;
 
 			}
-
+		    coloredObject.GetComponent<SpriteRenderer>().sprite = playerBalls[PlayerPrefs.GetInt("PlayerIndex", 0)];
 			// Set the current color of the object, based on the index
 			SetColor(0);
 		}
@@ -262,5 +263,6 @@ namespace ColorSwitchGame
 				Destroy(gameObject);
 			}
 		}
+
 	}
 }

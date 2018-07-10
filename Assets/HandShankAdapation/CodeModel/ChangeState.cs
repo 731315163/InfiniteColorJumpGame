@@ -1,6 +1,5 @@
-﻿using Assets.HandShankAdapation.Messenger;
-using Assets.HandShankAdapation.UGUI.AdapationStrategy;
-
+﻿using Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy;
+using Assets.HandShankAdapation.Messenger;
 using UnityEngine;
 
 namespace Assets.HandShankAdapation.CodeModel

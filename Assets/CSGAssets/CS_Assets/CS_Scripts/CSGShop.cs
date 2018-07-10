@@ -53,7 +53,7 @@ namespace ColorSwitchGame
 		/// This allows you to order initialization of scripts
 		/// </summary>
 		//todo
-		void Awake()
+		void Start()
 		{
 			//Assign the sound source for easier access
 			if ( GameObject.FindGameObjectWithTag(soundSourceTag) )    soundSource = GameObject.FindGameObjectWithTag(soundSourceTag);
@@ -88,6 +88,7 @@ namespace ColorSwitchGame
 
 				    var select = newButton.GetComponent<SelectItem>();
 				    select.State = playerBalls[index];
+				   
 				}
 				
 				// Calculate the size of the shop scroller so that it can fit all the items. This depends on the height of the default button multiplied by the number of buttons we have, then divided by the number of columns in the grid
@@ -95,6 +96,10 @@ namespace ColorSwitchGame
 				
 				// Deactivate the default button as we don't need it anymore
 				defaultButton.gameObject.SetActive(false);
+			    int defaultindex = PlayerPrefs.GetInt("PlayerIndex");
+                Debug.Log(index);
+			    playerBalls[defaultindex].buttonObject.GetComponent<SelectItem>().ChangeTextShow("使用中");
+                
 			}
 			
 			// Update the list of unlockables in the shop ( name, icon, price, lock state )
@@ -103,7 +108,7 @@ namespace ColorSwitchGame
 			
 		    // Don't destroy this shop when a level is loaded. This is done to allow the player in the level to be updated with our player choice from the shop.
            
-		//	DontDestroyOnLoad(gameObject);
+		     //	DontDestroyOnLoad(gameObject);
 		}
 		
 		/// <summary>
@@ -170,7 +175,6 @@ namespace ColorSwitchGame
 							playerBalls[index].buttonObject.GetComponent<Animation>().Play(selectAnimation.name);
 						}
 
-                        Debug.Log("nextindex : " + playerIndex);
                         playerBalls[playerIndex].buttonObject.GetComponent<SelectItem>().ChangeTextShow("");
 					    playerBalls[index].buttonObject.GetComponent<SelectItem>().ChangeTextShow("使用中");
 						// Save the index of the current player, so that the player object can be updated in game
@@ -186,15 +190,22 @@ namespace ColorSwitchGame
 						if ( unlockAnimation )    playerBalls[index].buttonObject.GetComponent<Animation>().Play(unlockAnimation.name);
 
 						// Save the index of the current player, so that the player object can be updated in game
-						PlayerPrefs.SetInt("PlayerIndex", index);
-
+				//		PlayerPrefs.SetInt("PlayerIndex", index);
+                       
 						// Show the icon of the player button
-						playerBalls[index].buttonObject.Find("Icon").gameObject.SetActive(true);
+					   //	playerBalls[index].buttonObject.Find("Icon").gameObject.SetActive(true);
 
 						// Set the item to "unklocked"
+                        Debug.Log("Hello ");
 						playerBalls[index].lockState = 1;
-
-						// Save the unlock state of the item
+					   //todo
+					    playerBalls[playerIndex].buttonObject.GetComponent<SelectItem>().ChangeTextShow("");
+					    playerBalls[index].buttonObject.GetComponent<SelectItem>().ChangeTextShow("使用中");
+					    // Save the index of the current player, so that the player object can be updated in game
+					    PlayerPrefs.SetInt("PlayerIndex", index);
+					    playerIndex = index;
+						
+					    // Save the unlock state of the item
 						PlayerPrefs.SetInt(playerBalls[index].name, 1);
 						
 						// Reduce the price from the money we have
@@ -208,6 +219,7 @@ namespace ColorSwitchGame
 
 						//If there is a source and a sound, play it from the source
 						if ( soundSource && soundUnlock )    soundSource.GetComponent<AudioSource>().PlayOneShot(soundUnlock);
+                        PlayerPrefs.Save();
 					}
 					else // If we don't have enough money, show error
 					{
@@ -219,6 +231,7 @@ namespace ColorSwitchGame
 					}
 				}
 			}
+            PlayerPrefs.Save();
 		}
 	}
 }

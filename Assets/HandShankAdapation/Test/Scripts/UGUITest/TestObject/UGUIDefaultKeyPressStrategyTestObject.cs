@@ -1,7 +1,6 @@
 ﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy;
-using Assets.HandShankAdapation.UGUI.AdapationStrategy;
 using Assets.HandShankAdapation.UIBounds;
 
 namespace Assets.HandShankAdapation.Test.Scripts.UGUITest.TestObject

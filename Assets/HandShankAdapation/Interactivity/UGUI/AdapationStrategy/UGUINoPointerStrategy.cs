@@ -1,10 +1,8 @@
 ﻿using System.Collections;
-using Assets.HandShankAdapation.ImitateAndroidInput;
 using Assets.HandShankAdapation.InputAdapation;
 using Assets.HandShankAdapation.InputAdapation.ImitateAndroidInput;
 using Assets.HandShankAdapation.InputHandle;
 using Assets.HandShankAdapation.InputHandle.InputManager;
-using Assets.HandShankAdapation.UGUI;
 using Assets.HandShankAdapation.UIBounds;
 using UnityEngine;
 
@@ -73,7 +71,7 @@ namespace Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy
             container = UIRectManager.Instance.FindActivityUIRectsOnMask();
             if (PointerAttachUI != null && IsContainUIRect(container,PointerAttachUI))
                 return;
-            PointerAttachUI = InitPointerWithRow ?FindInitUIRectWithRow()  : FindInitUIRectWithColume();
+            PointerAttachUI = InitPointerWithRow ?FindInitUIRect(container.Row)  : FindInitUIRect(container.Column);
             PointerMoveToUIRect(PointerAttachUI,Direction.Down);
         }
 

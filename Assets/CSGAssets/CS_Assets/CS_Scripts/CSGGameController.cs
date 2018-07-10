@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 #endif
 
 using System.Collections;
+using Assets.HandShankAdapation.InputAdapation;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -19,7 +20,7 @@ namespace ColorSwitchGame
 		public Transform playerObject;
 		
 		[Tooltip("The button for jumping. This is defined from the Input Manager and corresponds to the Mouse, Gamepad, Keyboard, and Touch")]
-		public string jumpButton = "Fire1";
+		public KeyCode jumpButton = Key.Entry;
 
 		[Tooltip("A list of all the colors in the game. This affects the blocks, color balls, and the player.")]
 		public Color[] colorList;
@@ -172,41 +173,41 @@ namespace ColorSwitchGame
 			}
 			else
 			{
-				//If the game is over, listen for the Restart and MainMenu buttons
-				if ( isGameOver == true )
-				{
-					//The jump button restarts the game
-					if ( Input.GetButtonDown(confirmButton) )
-					{
-						Restart();
-					}
-					
-					//The pause button goes to the main menu
-					if ( Input.GetButtonDown(pauseButton) )
-					{
-						MainMenu();
-					}
-				}
-				else
-				{
-					//Toggle pause/unpause in the game
-					if ( Input.GetButtonDown(pauseButton) )
-					{
-						if ( isPaused == true )    Unpause();
-						else    Pause(true);
-					}
+                //If the game is over, listen for the Restart and MainMenu buttons
+                //if ( isGameOver == true )
+                //{
+                //	//The jump button restarts the game
+                //	if ( Input.GetButtonDown(confirmButton) )
+                //	{
+                //		Restart();
+                //	}
 
-					// If a player exists and the game isn't paused, we can press the JumpButton to make the player jump
-					if ( playerObject && isPaused == false && !EventSystem.current.IsPointerOverGameObject() && Input.GetButtonDown(jumpButton) )
-					{
-						playerObject.SendMessage("Jump");
-					}
+                //	//The pause button goes to the main menu
+                //	if ( Input.GetButtonDown(pauseButton) )
+                //	{
+                //		MainMenu();
+                //	}
+                //}
+                //else
+                //{
+                //	//Toggle pause/unpause in the game
+                //	if ( Input.GetButtonDown(pauseButton) )
+                //	{
+                //		if ( isPaused == true )    Unpause();
+                //		else    Pause(true);
+                //	}
 
-					// If the player moves close enough to the current section, create another section
-					if ( sectionList.Length > 0 && playerObject.position.y > firstSection.position.y + nextSectionGap - 10 )    SpawnObject(sectionList);
-				}
-			}
-		}
+                //	// If a player exists and the game isn't paused, we can press the JumpButton to make the player jump
+                //	if ( playerObject && isPaused == false && !EventSystem.current.IsPointerOverGameObject() && Input.GetKeyDown(jumpButton) )
+                //	{
+                //		playerObject.SendMessage("Jump");
+                //	}
+
+                // If the player moves close enough to the current section, create another section
+                if (sectionList.Length > 0 && playerObject && playerObject.position.y > firstSection.position.y + nextSectionGap - 10) SpawnObject(sectionList);
+            }
+        }
+		
 
 		/// <summary>
 		/// Changes the distance to the next section position
@@ -251,7 +252,8 @@ namespace ColorSwitchGame
 		void  UpdateScore()
 		{
 			//Update the score text
-			if ( scoreText )    scoreText.GetComponent<Text>().text = Mathf.CeilToInt(scoreCount).ToString();
+			if ( scoreText )    
+			    scoreText.GetComponent<Text>().text = Mathf.CeilToInt(scoreCount).ToString();
 		}
 
 		/// <summary>
@@ -310,8 +312,8 @@ namespace ColorSwitchGame
 			//Show the pause screen and hide the game screen
 			if ( showMenu == true )
 			{
-				if ( pauseCanvas )    pauseCanvas.gameObject.SetActive(true);
-				if ( gameCanvas )    gameCanvas.gameObject.SetActive(false);
+				if ( pauseCanvas != null )    pauseCanvas.gameObject.SetActive(true);
+				if ( gameCanvas != null )    gameCanvas.gameObject.SetActive(false);
 			}
 		}
 		
@@ -320,14 +322,18 @@ namespace ColorSwitchGame
 		/// </summary>
 		public void  Unpause()
 		{
+            
 			isPaused = false;
 			
 			//Set timescale back to the current game speed
 			Time.timeScale = 1;
 			
 			//Hide the pause screen and show the game screen
-			if ( pauseCanvas )    pauseCanvas.gameObject.SetActive(false);
-			if ( gameCanvas )    gameCanvas.gameObject.SetActive(true);
+		    if (pauseCanvas != null)
+		    {
+		        pauseCanvas.gameObject.SetActive(false);
+		    }
+			if ( gameCanvas  != null)    gameCanvas.gameObject.SetActive(true);
 		}
 
 		/// <summary>
@@ -390,7 +396,7 @@ namespace ColorSwitchGame
 		/// <summary>
 		/// Restart the current level
 		/// </summary>
-		void  Restart()
+		public void  Restart()
 		{
 			#if UNITY_5_3 || UNITY_5_3_OR_NEWER
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -402,7 +408,7 @@ namespace ColorSwitchGame
 		/// <summary>
 		/// Restart the current level
 		/// </summary>
-		void  MainMenu()
+		public void  MainMenu()
 		{
 			#if UNITY_5_3 || UNITY_5_3_OR_NEWER
 			SceneManager.LoadScene(mainMenuLevelName);

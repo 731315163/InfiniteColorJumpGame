@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Assets.HandShankAdapation.CodeModel;
 using Assets.HandShankAdapation.Interactivity.UGUI;
+using Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy;
 using Assets.HandShankAdapation.UGUI;
-using Assets.HandShankAdapation.UGUI.AdapationStrategy;
 using UnityEngine;
 
 public class ChangeShopStrage : ChangeState
@@ -25,6 +25,5 @@ public class ChangeShopStrage : ChangeState
         else if( ! m.enabled && OperateModeManager.Instance.CurrentStrategy  != Strategy.DefaultStrategy)
             Change(Strategy.DefaultStrategy);
 
-            
 	}
 }

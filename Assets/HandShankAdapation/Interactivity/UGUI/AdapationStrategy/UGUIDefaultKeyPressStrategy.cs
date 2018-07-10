@@ -217,12 +217,6 @@ namespace Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy
         protected bool IsContainUIRect(UIContainer uicontainer, UIRect rect)
         {
            return uicontainer.Column.Contains(rect.DownEdge);
-            for (var i = uicontainer.Row.Count - 1; i >= 0; i--)
-            {
-                if (uicontainer.Row[i].UIRect.UIComponent.GetInstanceID() == rect.UIComponent.GetInstanceID())
-                    return true;
-            }
-            return false;
         }
         //直接点ui
         protected void SendUGUIClickEvent(UIRect click)
@@ -276,7 +270,6 @@ namespace Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy
         {
             if(inputmanager.GetInput().InputState !=(int)KeyState.Down)return;
             container = UIRectManager.Instance.FindActivityUIRectsOnMask();
-            
             var uirect = GetRightUIRect(PointerAttachUI,container.Row);
             
             PointerMoveToUIRect(uirect,Direction.Right);

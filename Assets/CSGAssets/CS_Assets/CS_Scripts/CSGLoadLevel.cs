@@ -54,7 +54,7 @@ namespace ColorSwitchGame
 		/// <param name="urlName">URL/URI</param>
 		public void LoadURL()
 		{
-			delayTime = Time.unscaledTime;
+		//	delayTime = Time.unscaledTime;
 
 			// Execute the function after a delay
 			StartCoroutine("ExecuteLoadURL");
@@ -83,11 +83,11 @@ namespace ColorSwitchGame
 		/// <param name="levelName">Level name.</param>
 		public void LoadLevel()
 		{
-			delayTime = Time.unscaledTime;
-
+            
+			//delayTime = Time.unscaledTime;
+           
 			// Execute the function after a delay
 			StartCoroutine("ExecuteLoadLevel");
-
 			if ( transitionEffect )    Instantiate(transitionEffect);
 			
 			// If there is a sound, play it from the source
@@ -99,8 +99,9 @@ namespace ColorSwitchGame
 		/// </summary>
 		IEnumerator ExecuteLoadLevel()
 		{
+		   
 			while ( delayTime + loadDelay > Time.unscaledTime )    yield return new WaitForEndOfFrame();
-
+		 
 			Time.timeScale = 1;
 
 			#if UNITY_5_3 || UNITY_5_3_OR_NEWER

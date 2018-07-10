@@ -1,18 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using Assets.HandShankAdapation.InputAdapation;
 using Assets.HandShankAdapation.InputHandle;
 using Assets.HandShankAdapation.InputHandle.InputManager;
 using GDGeek;
 using UniRx;
+using UniRx.Diagnostics;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Adatation.script
 {
     public class GameStrategy:KeyPressStrategy
     {
-        public GameObject Player;
+        protected GameObject Player;
         
-        protected IDisposable InputStream;
+        protected List<IDisposable> InputStream = new List<IDisposable>();
+        public UnityEvent PauseEvent;
 
         void Start()
         {
@@ -20,9 +24,18 @@ namespace Assets.Adatation.script
         }
         public override void OnStart()
         {
-            InputStream = InputObservableController.Instance.KeyDownStream
+            var stream = InputObservableController.Instance.KeyDownStream
                 .Where(key => key == Key.Entry)
-                .Subscribe(Jump);
+                .Subscribe(_=>{Player.SendMessage("Jump");});
+            InputStream.Add(stream);
+
+             stream = InputObservableController.Instance.KeyDownStream
+           .Where(key => key == Key.Esc)
+           .Subscribe(_ =>
+                 {
+                     PauseEvent.Invoke();
+                 });
+            InputStream.Add(stream);
         }
 
         protected void Jump(KeyCode key)
@@ -30,9 +43,10 @@ namespace Assets.Adatation.script
             if(Player != null)
                 Player.SendMessage("Jump");
         }
+        
         public override void OnOver()
         {
-           InputStream.Dispose();
+            InputStream.ForEach(dispose => dispose.Dispose());
         }
     }
 }

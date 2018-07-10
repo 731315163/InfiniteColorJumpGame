@@ -14,7 +14,7 @@ public class SelectItem : MonoBehaviour
 
     public Unlockable State;
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
 	    image = this.GetComponent<Image>();
         image.color = new Color(1,1,1,0);
@@ -39,6 +39,7 @@ public class SelectItem : MonoBehaviour
         nextstr = text.text;
         text.text = CurrentString;
         EventSystem.current.SetSelectedGameObject(this.gameObject);
+    //    GameObject.Find("CanvasShop").SendMessage("TryUnlock");
         image.color = Color.white;
     }
 }

@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using Assets.HandShankAdapation.InputAdapation;
+﻿using Assets.HandShankAdapation.InputAdapation;
 using Assets.HandShankAdapation.InputHandle;
 using Assets.HandShankAdapation.InputHandle.InputManager;
 using Assets.HandShankAdapation.Messenger;
 using GDGeek;
 using UnityEngine;
 
-namespace Assets.HandShankAdapation.UGUI.AdapationStrategy
+namespace Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy
 {
     public class Strategy
     {
@@ -60,7 +59,7 @@ namespace Assets.HandShankAdapation.UGUI.AdapationStrategy
 
         protected FSM fsm;
         public string CurrentStrategy;
-        void Awake()
+        void Start()
         {
             fsm = new FSM();
              foreach (var strategy in this.GetComponents<KeyPressStrategy>())

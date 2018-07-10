@@ -38,5 +38,7 @@ namespace Assets.HandShankAdapation.InputAdapation
 #else
          KeyCode.JoystickButton0;
 #endif
+
+        public static KeyCode Esc = KeyCode.Escape;
     }
 }

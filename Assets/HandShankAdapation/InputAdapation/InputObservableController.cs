@@ -31,14 +31,14 @@ namespace Assets.HandShankAdapation.InputAdapation
         {
             KeyDownStream = Observable.EveryUpdate()
                 .Where
-                    (_ => Input.anyKeyDown || Input.anyKey)
+                    (_ => Input.anyKeyDown)
                 .SelectMany
                     (_ => listenKeyCodes)
                 .Where
                     (key => Input.GetKeyDown(key) || Input.GetKey(key))
                 .Do
                     (_ => E.Input.IsAnyKeyHoldDown = true);
-            
+
         }
 
         protected void InitKeyHoldStream()

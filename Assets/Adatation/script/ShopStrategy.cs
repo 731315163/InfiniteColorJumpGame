@@ -3,7 +3,6 @@ using Assets.HandShankAdapation.InputHandle;
 using Assets.HandShankAdapation.InputHandle.InputManager;
 using Assets.HandShankAdapation.Interactivity.UGUI;
 using Assets.HandShankAdapation.Interactivity.UGUI.AdapationStrategy;
-using Assets.HandShankAdapation.UGUI;
 using Assets.HandShankAdapation.UIBounds;
 using UnityEngine;
 using UnityEngine.Events;
@@ -27,14 +26,12 @@ namespace Assets.Adatation.script
         public UnityEvent ExitEvent;
         public override void EscOperate(IInputManager<InputOP> inputmanager)
         {
-            if(inputmanager.GetInput().InputState == (int)KeyState.Down)
-            {
-                if (PointerAttachUI != null)
-                    PointerAttachUI.UIComponent.GetComponent<SelectItem>().NotSelect();
-                ExitEvent.Invoke();
-                var findinteractivity = FindInteractivityUI.Instance as FindInteractivityUI;
-                findinteractivity.SetRoot(RootCanvas);
-            }
+            if (inputmanager.GetInput().InputState != (int)KeyState.Down)
+                return;
+            if (PointerAttachUI != null)
+                PointerAttachUI.UIComponent.GetComponent<SelectItem>().NotSelect();
+            ExitEvent.Invoke();
+            (FindInteractivityUI.Instance as FindInteractivityUI).SetRoot(RootCanvas);
         }
     }
 }
